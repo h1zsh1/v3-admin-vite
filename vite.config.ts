@@ -1,17 +1,18 @@
-import { UserConfigExport } from "vite"
-import path, { resolve } from "path"
-import vue from "@vitejs/plugin-vue"
-import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
+import { UserConfigExport } from 'vite'
+import path, { resolve } from 'path'
+import vue from '@vitejs/plugin-vue'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import { IOCCopyRightPlugin } from './build/plugins/IOCCopyRightPlugin'
 
 /** 配置项文档：https://vitejs.dev/config */
 export default (): UserConfigExport => {
   return {
     /** build 打包时根据实际情况修改 base */
-    base: "./",
+    base: './',
     resolve: {
       alias: {
         /** @ 符号指向 src 目录 */
-        "@": resolve(__dirname, "./src")
+        '@': resolve(__dirname, './src')
       }
     },
     server: {
@@ -43,13 +44,13 @@ export default (): UserConfigExport => {
       /** 消除打包大小超过 500kb 警告 */
       chunkSizeWarningLimit: 2000,
       /** vite 2.6.x 以上需要配置 minify: terser，terserOptions 才能生效 */
-      minify: "terser",
+      minify: 'terser',
       /** 在 build 代码时移除 console.log、debugger 和 注释 */
       terserOptions: {
         compress: {
           drop_console: false,
           drop_debugger: true,
-          pure_funcs: ["console.log"]
+          pure_funcs: ['console.log']
         },
         output: {
           /** 删除注释 */
@@ -57,16 +58,16 @@ export default (): UserConfigExport => {
         }
       },
       /** 打包后静态资源目录 */
-      assetsDir: "static"
+      assetsDir: 'static'
     },
     /** vite 插件 */
     plugins: [
       vue(),
       /** svg */
       createSvgIconsPlugin({
-        iconDirs: [path.resolve(process.cwd(), "src/icons/svg")],
-        symbolId: "icon-[dir]-[name]"
-      })
+        iconDirs: [path.resolve(process.cwd(), 'src/icons/svg')],
+        symbolId: 'icon-[dir]-[name]'
+      }),
       // AutoImport({
       //   dts: "./types/auto-imports.d.ts",
       //   /** 自动按需导入 element-plus 相关函数，比如 ElMessage */
@@ -83,6 +84,7 @@ export default (): UserConfigExport => {
       //   /** 自动按需导入 element-plus 组件 */
       //   resolvers: [ElementPlusResolver()]
       // })
+      IOCCopyRightPlugin('xx平台')
     ]
   }
 }

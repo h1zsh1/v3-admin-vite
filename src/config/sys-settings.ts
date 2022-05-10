@@ -13,8 +13,8 @@ interface sysSetting {
 }
 
 const setting: sysSetting = {
-  title: "xx平台",
-  sysCode: "xxx",
+  title: 'xx平台',
+  sysCode: 'xxx',
   /**
    * @type {boolean} true | false
    * @description 是否显示路由标题
@@ -38,7 +38,7 @@ const setting: sysSetting = {
    * @description 是否使用框架的登录页
    */
   useOwnLogin: (function () {
-    return location.hostname === "localhost" || location.hostname === "127.1.1.1" || location.hostname === "0.0.0.0"
+    return location.hostname === 'localhost' || location.hostname === '127.1.1.1' || location.hostname === '0.0.0.0'
   })(),
   /**
    * @type {string}
