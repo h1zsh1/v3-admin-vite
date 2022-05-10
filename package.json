@@ -1,15 +1,13 @@
 {
-  "name": "v3-admin-vite",
-  "version": "3.1.4",
-  "description": "一个免费开源的中后台管理系统基础解决方案，基于 Vue3、TypeScript、Element-Plus、Pinia 和 Vite 等主流技术.",
+  "name": "ioc_vue_template",
+  "version": "3.0.0",
+  "description": "基于开源v3-admin-vite的管理后台模板，使用Vue3、TypeScript、Element-Plus、Pinia 和 Vite 等主流技术.",
   "author": {
-    "name": "pany",
-    "email": "939630029@qq.com",
-    "url": "https://github.com/pany-ang"
+    "name": "ioc"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/un-pany/v3-admin-vite.git"
+    "url": ""
   },
   "scripts": {
     "dev": "vite",

@@ -8,6 +8,7 @@ import { getToken } from "@/utils/cookies"
 import asyncRouteSettings from "@/config/async-route"
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
+import getPageTitle from "@/utils/get-page-title"
 
 const userStore = useUserStoreHook()
 const permissionStore = usePermissionStoreHook()
@@ -67,6 +68,7 @@ router.beforeEach(async (to: RouteLocationNormalized, _: RouteLocationNormalized
   }
 })
 
-router.afterEach(() => {
+router.afterEach((to: RouteLocationNormalized) => {
+  document.title = getPageTitle(to.meta.title)
   NProgress.done()
 })
