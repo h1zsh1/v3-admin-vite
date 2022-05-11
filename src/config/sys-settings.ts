@@ -45,7 +45,7 @@ const setting: sysSetting = {
    * @description 退出后的跳转地址，当useOwnLogin为false时生效
    * 实际项目中，请填入应用中枢的登录页地址值config.js中
    */
-  logoutToUrl: window.login_page_url(import.meta.env.VUE_APP_ENV),
+  logoutToUrl: window.login_page_url(import.meta.env.VITE_APP_ENV),
 
   /**
    * @type {boolean} true | false

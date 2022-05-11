@@ -4,7 +4,7 @@ interface  loginPageUrlFn{
   (env:string | undefined):string;
 }
 interface  serviceUrlFn{
-  (env:string | undefined, serverName:string | undefined, isSocket: number | undefined):string;
+  (env:string | undefined, isSocket: boolean | undefined):string;
 }
 
 interface Window {

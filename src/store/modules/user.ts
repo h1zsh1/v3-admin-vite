@@ -27,10 +27,7 @@ export const useUserStore = defineStore({
     /** 登录 */
     login(userInfo: { username: string; password: string }) {
       return new Promise((resolve, reject) => {
-        accountLogin({
-          username: userInfo.username.trim(),
-          password: userInfo.password
-        })
+        accountLogin(userInfo.username.trim(), userInfo.password)
           .then((res: any) => {
             setToken(res.data.accessToken)
             this.token = res.data.accessToken
@@ -86,4 +83,7 @@ export const useUserStore = defineStore({
 /** 在 setup 外使用 */
 export function useUserStoreHook() {
   return useUserStore(store)
+}
+function loginPwd(loginAccount: any, arg1: string, loginPwd: any, password: string) {
+  throw new Error('Function not implemented.')
 }

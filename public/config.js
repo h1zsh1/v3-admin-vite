@@ -4,15 +4,15 @@
  * @param {*} serverName
  * @param {*} isSocket
  */
-window.serviceUrl = function (env, serverName, isSocket) {
+window.serviceUrl = function (env, isSocket) {
   switch (env) {
     case 'dev':
-      return `${isSocket ? 'ws' : 'http'}://10.255.144.70/${isSocket ? serverName.replace('api/', '') : serverName}`
+      return `${isSocket ? 'ws' : 'http'}://10.255.144.70/`
     case 'test':
-      return `${isSocket ? 'ws' : 'http'}://10.255.144.119/${isSocket ? serverName.replace('api/', '') : serverName}`
+      return `${isSocket ? 'ws' : 'http'}://10.255.144.119/`
     case 'stage':
       // 现场部署时请把 ”部署环境的ip地址“ 这段文字修改成目标服务器的ip地址
-      return `${isSocket ? 'ws' : 'http'}://部署环境的ip地址/${isSocket ? serverName.replace('api/', '') : serverName}`
+      return `${isSocket ? 'ws' : 'http'}://部署环境的ip地址/`
   }
 }
 

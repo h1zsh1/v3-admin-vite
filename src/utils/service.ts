@@ -3,6 +3,9 @@ import { useUserStoreHook } from '@/store/modules/user'
 import { ElMessage } from 'element-plus'
 import { get } from 'lodash-es'
 import { getToken } from '@/utils/cookies'
+import getBaseUrl from '@/utils/api-base-url'
+
+console.log(getBaseUrl(false), '******')
 
 /** 创建请求实例 */
 function createService() {
@@ -99,7 +102,7 @@ function createRequestFunction(service: AxiosInstance) {
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
       timeout: 5000,
-      baseURL: import.meta.env.VITE_BASE_API,
+      baseURL: getBaseUrl(false), // 定义请求路径
       data: {}
     }
     return service(Object.assign(configDefault, config))

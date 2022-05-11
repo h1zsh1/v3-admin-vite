@@ -23,7 +23,7 @@ export default (): UserConfigExport => {
       /** 端口号 */
       port: 9528,
       /** 是否自动打开浏览器 */
-      open: false,
+      open: true,
       /** 跨域设置允许 */
       cors: true,
       /** 端口被占用时，是否直接退出 */
