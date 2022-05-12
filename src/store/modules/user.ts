@@ -3,12 +3,18 @@ import { defineStore } from 'pinia'
 import { usePermissionStore } from './permission'
 import { getToken, removeToken, setToken } from '@/utils/cookies'
 import router, { resetRouter } from '@/router'
-import { accountLogin, userInfoRequest } from '@/api/login'
+import { accountLogin, userInfoRequest, logout } from '@/api/login'
 import { RouteRecordRaw } from 'vue-router'
+import DefaultUserIcon from '@/assets/user.png'
+import { getWindowParentRef } from '@/utils'
+import settingsConf from '@/config/sys-settings'
 
 interface IUserState {
   token: string
   roles: string[]
+  userId: number
+  userName: string
+  avatar: unknown
 }
 
 export const useUserStore = defineStore({
@@ -16,7 +22,10 @@ export const useUserStore = defineStore({
   state: (): IUserState => {
     return {
       token: getToken() || '',
-      roles: []
+      roles: [],
+      userId: 0,
+      userName: '',
+      avatar: DefaultUserIcon
     }
   },
   actions: {
@@ -29,8 +38,8 @@ export const useUserStore = defineStore({
       return new Promise((resolve, reject) => {
         accountLogin(userInfo.username.trim(), userInfo.password)
           .then((res: any) => {
-            setToken(res.data.accessToken)
-            this.token = res.data.accessToken
+            setToken(res.data.token)
+            this.token = res.data.token
             resolve(true)
           })
           .catch((error) => {
@@ -41,9 +50,11 @@ export const useUserStore = defineStore({
     /** 获取用户详情 */
     getInfo() {
       return new Promise((resolve, reject) => {
-        userInfoRequest()
+        userInfoRequest(this.token)
           .then((res: any) => {
-            this.roles = res.data.user.roles
+            this.roles = res.data.roleList
+            this.userId = res.data.userId
+            this.userName = res.data.userName
             resolve(res)
           })
           .catch((error) => {
@@ -65,17 +76,35 @@ export const useUserStore = defineStore({
       })
     },
     /** 登出 */
-    logout() {
-      removeToken()
-      this.token = ''
-      this.roles = []
-      resetRouter()
+    logout(redirectPath?: string | undefined) {
+      window.embed && window.parent.postMessage({ method: 'logout' }, getWindowParentRef())
+      return new Promise<void>((resolve, reject) => {
+        logout(this.token)
+          .then(() => {
+            removeToken()
+            resetRouter()
+            this.token = ''
+            this.roles = []
+            const loginUrl = redirectPath ? `/login?redirect=${redirectPath}` : '/login'
+            settingsConf.useOwnLogin || window.debug
+              ? router.push(loginUrl)
+              : (window.location.href = settingsConf.logoutToUrl)
+            resolve()
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
     },
     /** 重置 token */
-    resetToken() {
+    resetToken(redirectPath?: string | undefined) {
       removeToken()
       this.token = ''
       this.roles = []
+      const loginUrl = redirectPath ? `/login?redirect=${redirectPath}` : '/login'
+      settingsConf.useOwnLogin || window.debug
+        ? router.push(loginUrl)
+        : (window.location.href = settingsConf.logoutToUrl)
     }
   }
 })
@@ -84,6 +113,7 @@ export const useUserStore = defineStore({
 export function useUserStoreHook() {
   return useUserStore(store)
 }
+
 function loginPwd(loginAccount: any, arg1: string, loginPwd: any, password: string) {
   throw new Error('Function not implemented.')
 }

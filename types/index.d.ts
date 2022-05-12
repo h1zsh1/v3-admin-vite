@@ -9,5 +9,7 @@ interface  serviceUrlFn{
 
 interface Window {
   login_page_url: loginPageUrlFn,
-  serviceUrl: serviceUrlFn
+  serviceUrl: serviceUrlFn,
+  embed: Boolean,
+  debug: Boolean
 }

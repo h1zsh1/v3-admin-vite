@@ -9,6 +9,7 @@ import loadSvg from '@/icons'
 import * as directives from '@/directives'
 import '@/styles/index.scss'
 import 'normalize.css'
+import preprocess from '@/config/preprocess'
 
 const app = createApp(App)
 /** element-plus 组件完整引入 */
@@ -21,3 +22,5 @@ Object.keys(directives).forEach((key) => {
 })
 
 app.use(store).use(router).mount('#app')
+
+preprocess()

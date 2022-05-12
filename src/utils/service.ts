@@ -4,8 +4,7 @@ import { ElMessage } from 'element-plus'
 import { get } from 'lodash-es'
 import { getToken } from '@/utils/cookies'
 import getBaseUrl from '@/utils/api-base-url'
-
-console.log(getBaseUrl(false), '******')
+import settingsConf from '@/config/sys-settings'
 
 /** 创建请求实例 */
 function createService() {
@@ -24,23 +23,15 @@ function createService() {
       const apiData = response.data as any
       // 这个 code 是和后端约定的业务 code
       const code = apiData.code
-      // 如果没有 code, 代表这不是项目后端开发的 api
-      if (code === undefined) {
-        ElMessage.error('非本系统的接口')
-        return Promise.reject(new Error('非本系统的接口'))
-      } else {
-        switch (code) {
-          case 0:
-            // code === 0 代表没有错误
-            return apiData
-          case 20000:
-            // code === 20000 代表没有错误
-            return apiData
-          default:
-            // 不是正确的 code
-            ElMessage.error(apiData.msg || 'Error')
-            return Promise.reject(new Error('Error'))
+
+      if (code !== settingsConf.resSuccessCode) {
+        ElMessage.error(apiData.message || apiData.msg || '服务端错误')
+        if (code === settingsConf.resTokenErrorCode) {
+          useUserStoreHook().resetToken()
         }
+        return Promise.reject(new Error(apiData.message || apiData.msg || '服务端错误'))
+      } else {
+        return apiData
       }
     },
     (error) => {
@@ -98,8 +89,7 @@ function createRequestFunction(service: AxiosInstance) {
     const configDefault = {
       headers: {
         // 携带 token
-        'X-Access-Token': getToken(),
-        'Content-Type': get(config, 'headers.Content-Type', 'application/json')
+        token: getToken()
       },
       timeout: 5000,
       baseURL: getBaseUrl(false), // 定义请求路径

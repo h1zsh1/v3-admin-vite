@@ -9,7 +9,7 @@ export const permission: Directive = {
     if (value && value instanceof Array && value.length > 0) {
       const permissionRoles = value
       const hasPermission = roles.some((role: any) => {
-        return permissionRoles.includes(role)
+        return permissionRoles.includes(role.roleName)
       })
       if (!hasPermission) {
         el.style.display = 'none'
