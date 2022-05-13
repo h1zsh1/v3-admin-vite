@@ -10,9 +10,10 @@
     "url": ""
   },
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
+    "build:dev": "vue-tsc --noEmit && vite build --mode developing",
+    "build:test": "vue-tsc --noEmit && vite build --mode production",
     "build:stage": "vue-tsc --noEmit && vite build --mode staging",
-    "build:prod": "vue-tsc --noEmit && vite build",
     "preview:stage": "pnpm build:stage && vite preview",
     "preview:prod": "pnpm build:prod && vite preview",
     "lint:eslint": "eslint \"src/**/*.{vue,ts,tsx}\" --fix",
