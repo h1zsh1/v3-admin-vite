@@ -1,21 +1,12 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 const Layout = () => import('@/layout/index.vue')
 
+import asyncRouteSettings from '@/config/async-route'
+import settings from '@/config/sys-settings'
+import { asyncRoutes } from '@/router/system'
+
 /** 常驻路由 */
 export const constantRoutes: Array<RouteRecordRaw> = [
-  {
-    path: '/redirect',
-    component: Layout,
-    meta: {
-      hidden: true
-    },
-    children: [
-      {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index.vue')
-      }
-    ]
-  },
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
@@ -26,164 +17,72 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index.vue'),
-        name: 'Dashboard',
-        meta: {
-          title: '首页',
-          icon: 'dashboard',
-          affix: true
-        }
-      }
-    ]
-  },
-  {
-    path: '/link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://juejin.cn/post/7089377403717287972',
-        component: () => {},
-        name: 'Link',
-        meta: {
-          title: '外链',
-          icon: 'link'
-        }
-      }
-    ]
-  },
-  {
-    path: '/menu',
-    component: Layout,
-    redirect: '/menu/menu1',
-    name: 'Menu',
+    // redirect: '/demo',
     meta: {
-      title: '多级菜单',
-      icon: 'menu'
-    },
+      hidden: true
+    }
+  },
+
+  {
+    path: '/message',
+    component: Layout,
+    meta: { title: '消息列表', hidden: true },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/menu/menu1/index.vue'),
-        redirect: '/menu/menu1/menu1-1',
-        name: 'Menu1',
-        meta: { title: 'menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/menu/menu1/menu1-1/index.vue'),
-            name: 'Menu1-1',
-            meta: { title: 'menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/menu/menu1/menu1-2/index.vue'),
-            redirect: '/menu/menu1/menu1-2/menu1-2-1',
-            name: 'Menu1-2',
-            meta: { title: 'menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/menu/menu1/menu1-2/menu1-2-1/index.vue'),
-                name: 'Menu1-2-1',
-                meta: { title: 'menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/menu/menu1/menu1-2/menu1-2-2/index.vue'),
-                name: 'Menu1-2-2',
-                meta: { title: 'menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/menu/menu1/menu1-3/index.vue'),
-            name: 'Menu1-3',
-            meta: { title: 'menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/menu/menu2/index.vue'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
+        path: '',
+        meta: { title: '消息列表' },
+        component: () => import('@/views/login/index.vue')
       }
     ]
   }
 ]
 
-/**
- * 动态路由
- * 用来放置有权限（roles 属性）的路由
- * 必须带有 name 属性
- */
-export const asyncRoutes: Array<RouteRecordRaw> = [
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    name: 'Permission',
-    meta: {
-      title: '权限管理',
-      icon: 'lock',
-      roles: ['admin', 'editor'], // 可以在根路由中设置角色
-      alwaysShow: true // 将始终显示根菜单
-    },
-    children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page.vue'),
-        name: 'PagePermission',
-        meta: {
-          title: '页面权限',
-          roles: ['admin'] // 或者在子导航中设置角色
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive.vue'),
-        name: 'DirectivePermission',
-        meta: {
-          title: '指令权限' // 如果未设置角色，则表示：该页面不需要权限，但会继承根路由的角色
-        }
-      }
-    ]
+// 必须将 'ErrorPage' 路由放在最后, Must put the 'ErrorPage' route at the end
+export const redirectTo404Route = {
+  path: '/:pathMatch(.*)*',
+  component: Layout,
+  redirect: '/404',
+  name: 'ErrorPage',
+  meta: {
+    title: '错误页面',
+    icon: '404',
+    hidden: true
   },
-  {
-    path: '/:pathMatch(.*)*', // 必须将 'ErrorPage' 路由放在最后, Must put the 'ErrorPage' route at the end
-    component: Layout,
-    redirect: '/404',
-    name: 'ErrorPage',
-    meta: {
-      title: '错误页面',
-      icon: '404',
-      hidden: true
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@/views/error-page/401.vue'),
-        name: '401',
-        meta: {
-          title: '401'
-        }
-      },
-      {
-        path: '404',
-        component: () => import('@/views/error-page/404.vue'),
-        name: '404',
-        meta: {
-          title: '404'
-        }
+  children: [
+    {
+      path: '401',
+      component: () => import('@/views/error-page/401.vue'),
+      name: '401',
+      meta: {
+        title: '401'
       }
-    ]
-  }
-]
+    },
+    {
+      path: '404',
+      component: () => import('@/views/error-page/404.vue'),
+      name: '404',
+      meta: {
+        title: '404'
+      }
+    }
+  ]
+}
+
+// 如果设置不使用框架的登录页，需要去除登录页面的路由
+if (!settings.useOwnLogin) {
+  constantRoutes.shift()
+}
+// 如果不开启消息功能，需去除相应路由
+if (!settings.useMsg) {
+  const msgIndex = constantRoutes.findIndex((item) => item.path === '/message')
+  constantRoutes.splice(msgIndex, 1)
+}
+
+if (!asyncRouteSettings.open) {
+  // 非动态路由逻辑
+  constantRoutes.push(...asyncRoutes)
+  constantRoutes.push(redirectTo404Route)
+}
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -195,8 +94,8 @@ export function resetRouter() {
   // 注意：所有动态路由路由必须带有 name 属性，否则可能会不能完全重置干净
   try {
     router.getRoutes().forEach((route) => {
-      const { name, meta } = route
-      if (name && meta.roles?.length) {
+      const { name } = route
+      if (name) {
         router.hasRoute(name) && router.removeRoute(name)
       }
     })

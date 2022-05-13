@@ -1,10 +1,9 @@
+/* eslint-disable no-unused-vars */
 import store from '@/store'
 import { defineStore } from 'pinia'
-import { usePermissionStore } from './permission'
 import { getToken, removeToken, setToken } from '@/utils/cookies'
 import router, { resetRouter } from '@/router'
 import { accountLogin, userInfoRequest, logout } from '@/api/login'
-import { RouteRecordRaw } from 'vue-router'
 import DefaultUserIcon from '@/assets/user.png'
 import { getWindowParentRef } from '@/utils'
 import settingsConf from '@/config/sys-settings'
@@ -62,19 +61,7 @@ export const useUserStore = defineStore({
           })
       })
     },
-    /** 切换角色 */
-    async changeRoles(role: string) {
-      const token = role + '-token'
-      this.token = token
-      setToken(token)
-      await this.getInfo()
-      const permissionStore = usePermissionStore()
-      permissionStore.setRoutes(this.roles)
-      resetRouter()
-      permissionStore.dynamicRoutes.forEach((item: RouteRecordRaw) => {
-        router.addRoute(item)
-      })
-    },
+
     /** 登出 */
     logout(redirectPath?: string | undefined) {
       window.embed && window.parent.postMessage({ method: 'logout' }, getWindowParentRef())
@@ -114,6 +101,7 @@ export function useUserStoreHook() {
   return useUserStore(store)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function loginPwd(loginAccount: any, arg1: string, loginPwd: any, password: string) {
   throw new Error('Function not implemented.')
 }

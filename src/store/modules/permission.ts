@@ -1,39 +1,14 @@
 import store from '@/store'
 import { defineStore } from 'pinia'
 import { RouteRecordRaw } from 'vue-router'
-import { constantRoutes, asyncRoutes } from '@/router'
+import { constantRoutes, redirectTo404Route } from '@/router'
+import { getPowerList, analysisPowerToRoutes } from '@/alter/route'
+import { getToken } from '@/utils/cookies'
 
 interface IPermissionState {
   routes: RouteRecordRaw[]
   dynamicRoutes: RouteRecordRaw[]
-}
-
-const hasPermission = (roles: string[], route: RouteRecordRaw) => {
-  if (route.meta && route.meta.roles) {
-    return roles.some((role) => {
-      if (route.meta?.roles !== undefined) {
-        return route.meta.roles.includes(role)
-      } else {
-        return false
-      }
-    })
-  } else {
-    return true
-  }
-}
-
-const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
-  const res: RouteRecordRaw[] = []
-  routes.forEach((route) => {
-    const r = { ...route }
-    if (hasPermission(roles, r)) {
-      if (r.children) {
-        r.children = filterAsyncRoutes(r.children, roles)
-      }
-      res.push(r)
-    }
-  })
-  return res
+  routesLoaded: Boolean
 }
 
 export const usePermissionStore = defineStore({
@@ -41,19 +16,17 @@ export const usePermissionStore = defineStore({
   state: (): IPermissionState => {
     return {
       routes: [],
-      dynamicRoutes: []
+      dynamicRoutes: [],
+      routesLoaded: false
     }
   },
   actions: {
-    setRoutes(roles: string[]) {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      this.routes = constantRoutes.concat(accessedRoutes)
-      this.dynamicRoutes = accessedRoutes
+    async getPowerRoutes() {
+      const powerList = await getPowerList(getToken() || '')
+      const powerRoutes = analysisPowerToRoutes(powerList, redirectTo404Route)
+      this.routesLoaded = true
+      this.routes = constantRoutes.concat(powerRoutes)
+      return powerRoutes
     }
   }
 })
