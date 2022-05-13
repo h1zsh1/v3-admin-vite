@@ -27,6 +27,9 @@ export const usePermissionStore = defineStore({
       this.routesLoaded = true
       this.routes = constantRoutes.concat(powerRoutes)
       return powerRoutes
+    },
+    setAppRoutes(arr: RouteRecordRaw[]) {
+      this.routes = arr
     }
   }
 })

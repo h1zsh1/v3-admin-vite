@@ -6,6 +6,7 @@ import { usePermissionStore } from '@/store/modules/permission'
 import { useSettingsStore } from '@/store/modules/settings'
 import SidebarItem from './SidebarItem.vue'
 import SidebarLogo from './SidebarLogo.vue'
+import { constants } from 'fs'
 
 const route = useRoute()
 
@@ -15,6 +16,7 @@ const sidebar = computed(() => {
 const routes = computed(() => {
   return usePermissionStore().routes
 })
+
 const showLogo = computed(() => {
   return useSettingsStore().showSidebarLogo
 })

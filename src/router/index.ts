@@ -4,6 +4,7 @@ const Layout = () => import('@/layout/index.vue')
 import asyncRouteSettings from '@/config/async-route'
 import settings from '@/config/sys-settings'
 import { asyncRoutes } from '@/router/system'
+import { usePermissionStoreHook } from '@/store/modules/permission'
 
 /** 常驻路由 */
 export const constantRoutes: Array<RouteRecordRaw> = [
@@ -82,6 +83,7 @@ if (!asyncRouteSettings.open) {
   // 非动态路由逻辑
   constantRoutes.push(...asyncRoutes)
   constantRoutes.push(redirectTo404Route)
+  usePermissionStoreHook().setAppRoutes(constantRoutes)
 }
 
 const router = createRouter({
