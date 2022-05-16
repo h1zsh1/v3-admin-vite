@@ -1,0 +1,16 @@
+@use "sass:math";
+@use "sass:map";
+
+@import '../../node_modules/hongluan-ui/theme/scss/common/config';
+@import '../../node_modules/@hongluan-ui/styles/2.x/fx/spec/config';
+$conf_layout_custom: (
+  "aside-respond-width-collapse": false, // 响应式侧栏折叠尺寸 (false为不渲染)
+);
+$conf_layout: map.merge($conf_layout, $conf_layout_custom);
+
+@import '../../node_modules/hongluan-ui/theme/scss/components';
+@import '../../node_modules/hongluan-business-ui/theme/scss/components';
+
+
+$imgPath: '../../node_modules/@hongluan-ui/styles/images/';
+@import '../../node_modules/@hongluan-ui/styles/2.x/fx/themes/pro/index';

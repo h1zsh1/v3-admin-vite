@@ -23,9 +23,14 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^1.1.4",
+    "@hongluan-ui/icons": "^1.4.6",
+    "@hongluan-ui/styles": "^1.2.0",
     "axios": "^0.27.2",
     "dayjs": "^1.11.1",
     "element-plus": "^2.1.11",
+    "hongluan-business-ui": "^4.0.0",
+    "hongluan-hooks": "^1.1.5",
+    "hongluan-ui": "^2.0.1",
     "js-cookie": "^3.0.1",
     "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",
@@ -34,6 +39,7 @@
     "path-to-regexp": "^6.2.0",
     "pinia": "^2.0.13",
     "screenfull": "^6.0.1",
+    "unplugin-vue-components": "^0.19.5",
     "vue": "^3.2.33",
     "vue-router": "^4.0.15"
   },

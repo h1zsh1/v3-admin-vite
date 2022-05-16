@@ -1,8 +1,10 @@
+// @ts-nocheck
 import { UserConfigExport } from 'vite'
 import path, { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { IOCCopyRightPlugin } from './build/plugins/IOCCopyRightPlugin'
+import Components from 'unplugin-vue-components/vite'
 
 /** 配置项文档：https://vitejs.dev/config */
 export default (): UserConfigExport => {
@@ -84,6 +86,27 @@ export default (): UserConfigExport => {
       //   /** 自动按需导入 element-plus 组件 */
       //   resolvers: [ElementPlusResolver()]
       // })
+      Components({
+        resolvers: [
+          (name) => {
+            if (name.startsWith('Hl')) return { importName: name, path: 'hongluan-ui' }
+          },
+          (name) => {
+            if (name.startsWith('Hb')) {
+              return { importName: name, path: 'hongluan-business-ui' }
+            }
+          },
+          (name) => {
+            if (name.startsWith('Two') || name.startsWith('Fill') || name.startsWith('File'))
+              return { importName: name, path: '@hongluan-ui/icons' }
+          },
+          (name) => {
+            if (name.startsWith('Fx')) {
+              return { importName: name, path: 'pc-fx-framework' }
+            }
+          }
+        ]
+      }),
       IOCCopyRightPlugin('xx平台')
     ]
   }

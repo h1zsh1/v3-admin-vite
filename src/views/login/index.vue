@@ -25,8 +25,7 @@ const state = reactive({
   /** 登录表单 */
   loginForm: {
     username: 'zsdev',
-    password: '111111',
-    code: 'abcd'
+    password: '111111'
   } as ILoginForm,
   /** 登录表单校验规则 */
   loginRules: {
@@ -34,8 +33,7 @@ const state = reactive({
     password: [
       { required: true, message: '请输入密码', trigger: 'blur' },
       { min: 6, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
-    ],
-    code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+    ]
   },
   /** 登录逻辑 */
   handleLogin: () => {
@@ -106,20 +104,7 @@ const state = reactive({
               show-password
             />
           </el-form-item>
-          <el-form-item prop="code">
-            <el-input
-              v-model="state.loginForm.code"
-              placeholder="验证码"
-              type="text"
-              tabindex="3"
-              :prefix-icon="Key"
-              maxlength="4"
-              size="large"
-            />
-            <span class="show-code">
-              <img :src="state.codeUrl" @click="state.createCode" />
-            </span>
-          </el-form-item>
+
           <el-button :loading="state.loading" type="primary" size="large" @click.prevent="state.handleLogin">
             登 录
           </el-button>

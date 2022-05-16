@@ -1,3 +1,5 @@
+import 'hongluan-ui/dist/index.css' //引入鸿栾样式文件
+
 import { createApp, Directive } from 'vue'
 import router from './router'
 import '@/router/permission'
@@ -7,13 +9,16 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import loadSvg from '@/icons'
 import * as directives from '@/directives'
+
 import '@/styles/index.scss'
 import 'normalize.css'
+
 import preprocess from '@/config/preprocess'
 
 const app = createApp(App)
 /** element-plus 组件完整引入 */
 app.use(ElementPlus)
+
 /** 加载全局 svg */
 loadSvg(app)
 /** 自定义指令 */
